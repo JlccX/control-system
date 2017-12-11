@@ -18,13 +18,17 @@ node('master') {
       docker.withRegistry("https://hub.docker.com"){
       docker.image("jlccxincontact/nodejs:alpine").inside("-u root:root"){
 
+        sh '''
+            set +x
+            printf "executing the pre-deploy stage."
+        '''
+
         //dir("$SOURCE_CODE_FOLDER"){
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'JlccX-SSH-Private-Key', url: 'git@github.com:JlccX/control-system.git']]])
         //}
 
         sh '''
             set +x
-            printf "executing the pre-deploy stage."
             printf "The downloaded code is:\n"
             ls
         '''
