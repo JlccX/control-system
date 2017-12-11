@@ -20,7 +20,7 @@ node('master') {
 
         sh '''
             set +x
-            printf "executing the pre-deploy stage."
+            printf "executing the pre-deploy stage.\n"
         '''
 
         //dir("$SOURCE_CODE_FOLDER"){
