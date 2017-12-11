@@ -1,0 +1,5 @@
+credentials.yml
+coverage
+.scannerwork
+.DS_Store
+node_modules
