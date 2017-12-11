@@ -11,6 +11,8 @@ node('master') {
         printf "The NODE_NAME parameter is: ${NODE_NAME}\n"
         printf "The GIT_URL value is: ${GIT_URL}\n"
         printf "The GIT_BRANCH value is: ${GIT_BRANCH}\n"
+        printf "The system properties are:\n"
+        uname -a
       '''
 
     stage('pre-deploy'){
