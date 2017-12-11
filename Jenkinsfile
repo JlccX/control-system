@@ -44,7 +44,7 @@ node('master') {
       docker.image("jlccxincontact/nodejs:alpine").inside("-u root:root"){
           sh '''
               set +x
-              printf "\SonarQube stage.\n"
+              printf "SonarQube stage.\n"
               printf "The operating system properties are:\n"
               uname -a
           '''
