@@ -42,9 +42,6 @@ node('master') {
           sh '''
               set +x
               printf "\nThe deploy test execution was canceled.\n"
-              chmod +x $SOURCE_CODE_FOLDER/scripts/deploy.test.sh
-              printf "\nAdding eecution permissions to the script.\n"
-              #$SOURCE_CODE_FOLDER/scripts/deploy.test.sh $SOURCE_CODE_FOLDER $SELFSERVICE_API_KEY $AWS_BASE_URL $AWS_STAGE $GITHUB_USERNAME $GITHUB_TOKEN $ALLOWED_ORIGINS $TIMEOUT
           '''
         }
     }
