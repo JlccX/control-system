@@ -39,6 +39,19 @@ node('master') {
     }
   }
 
+  stage("sonarqube"){
+    docker.withRegistry("https://hub.docker.com"){
+      docker.image("jlccxincontact/nodejs:alpine").inside("-u root:root"){
+          sh '''
+              set +x
+              printf "\SonarQube stage.\n"
+              printf "The operating system properties are:\n"
+              uname -a
+          '''
+        }
+    }
+  }
+
   
   stage("deploy-tests"){
     docker.withRegistry("https://hub.docker.com"){
