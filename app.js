@@ -64,29 +64,28 @@ app.get('/admin/members-list', function(req, res){
     
         
     // testing changes
-  
+
+    var myCallback = function(data){
+        members = data;
+        console.log("myCallback The members size is: "+members.length);
+        console.log("myCallback The members size is: "+members.size);
+        console.log("myCallback The members size is: "+members.count);
     
+        var title = "Organization members list";
+    
+        res.render("pages/members-list",{ Members: members, Title: title });
+    };
 
-    // db.all("Select memberId, first_name, last_name, mobile_phone FROM Members", function(error, rows){
-    //     rows.forEach(function(row) {
-            
-    //     });
-    // });
-    //db.close();
-
-    console.log("The members size is: "+members.length);
-    console.log("The members size is: "+members.size);
-    console.log("The members size is: "+members.count);
-
-    var title = "Organization members list";
-
-    res.render("pages/members-list",{Members: members, Title: title});
+    console.log("The membersX size is: "+members.length);
+    console.log("The membersX size is: "+members.size);
+    console.log("The membersX size is: "+members.count);
 
 });
 
+
 //db.run("INSERT INTO Members (memberId,first_name,last_name,mobile_phone) VALUES(?,?,?,?)",['1024','Juan','Chavez','71787735']);
 
- exports.getAllMembers = function(callback){
+function getAllMembers(callback){
 
     var db = new sqlite.Database(dbFileName);
     var list = [];
@@ -102,6 +101,5 @@ app.get('/admin/members-list', function(req, res){
     callback(list);
     db.close();
 }
-
 
 app.listen(3000);
