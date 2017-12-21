@@ -9,15 +9,28 @@
         </header>
         <div id="content">
             <div class="table">
-
-                <table>
-                    <th>
-                        <td>Firstname</td>
-                        <td>Lastname</td>
-                        <td>Mobilephone</td>
-                    </th>
-                </table>
-                
+                <% if (Members && Members.length>0) { %>
+                    <table>
+                        <th>
+                            <td>Firstname</td>
+                            <td>Lastname</td>
+                            <td>Mobilephone</td>
+                            <td></td>
+                        </th>
+                        <% Members.forEach(function(row) { %>
+                        <tr>
+                            <td> <%= row.Firstname %> </td>
+                            <td> <%= row.Lastname %> </td>
+                            <td> <%= row.Mobilephone %> </td>
+                            <td> <a href=/admin/member?id=<%= row.MemberId %>>Update</a></td>
+                        </tr>
+                        <% }); %>
+                    </table>
+                <% } else { %>
+                    <p>
+                        There is no members data available.
+                    </p>
+                <% } %>
             </div>
 
         </div>
