@@ -107,17 +107,17 @@ app.post('/admin/delete', function(req, res){
             else{
                 console.log("The member to remove is: "+JSON.stringify(row));
                 
-                getMembersList();
+                getMembersList(res);
             }
         });
         
     });
 
 app.get('/admin/members-list', function(req, res){
-    getMembersList();
+    getMembersList(res);
 });
 
-function getMembersList(){
+function getMembersList(res){
     console.log("Starting the members-list page.");
     // res.render(__dirname+"/views/members-list.html");
 
@@ -149,7 +149,7 @@ app.post('/admin/member', function(req, res){
         id = null;
     }
 
-    var data = [req.body.firstname, req.body.lastname, req.body.ssn, req.body.phone, req.body.cellphone, req.body.email, req.body.address, req.body.registerDate, id];
+    var data = [req.body.firstname, req.body.lastname, req.body.ssn, req.body.phone, req.body.cellphone, req.body.email, req.body.address.trim(), req.body.registerDate, id];
     let db = new sqlite.Database(dbFileName);
     //var data = [req.body.memberId];
 

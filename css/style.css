@@ -153,14 +153,15 @@ div.input label {
     padding-top: 3px;
 }
 
-div.input strong {
+div.input strong,
+strong.required {
     color:blue;
     font-size: 30px;
     font-weight: bold;
 }
 
 div.input.double label {
-    width: 15%;
+    width: 14.5%;
 }
 
 div.input input {
@@ -171,8 +172,14 @@ div.input input {
 }
 
 div.input.double input {
+    width: 73%;
+    height: 60px;
+}
+
+div.input.double textarea {
     width: 71%;
     height: 60px;
+    float: left;
 }
 
 div.input input[type=submit] {
