@@ -26,7 +26,7 @@ node('master') {
         '''
 
         //dir("$SOURCE_CODE_FOLDER"){
-            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'JlccX-SSH-Private-Key', url: 'git@github.com:JlccX/control-system.git']]])
+            checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHub-Credentials-Username-Password-NoToken', url: 'https://github.com/jlccx-incontact/control-system.git']]])
         //}
 
         sh '''
