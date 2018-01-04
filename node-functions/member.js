@@ -8,7 +8,7 @@ var sqlite = require("sqlite3").verbose();
 exports.handler = function(method, data, callback){
     switch(method){
         case "get":
-            console.log("case member get");
+            console.log("case member get"); 
             _get_member(data, callback);
         break;
         case "list":

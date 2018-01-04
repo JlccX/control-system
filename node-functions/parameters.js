@@ -1,4 +1,4 @@
 module.exports = 
 {
-    dbFileName: "mydb.db"
+    dbFileName: "mydb.db" 
 };

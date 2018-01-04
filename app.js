@@ -96,7 +96,7 @@ app.get('/admin/members-list', function(req, res){
         }
 
         res.render("pages/members-list",{ Members: response, Title: "Members list page" });
-    });
+    }); 
 });
 
 
