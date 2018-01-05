@@ -88,10 +88,10 @@ function _get_members_list(data, callback){
     });
 }
 
-function _delete_member(callback){
-    console.log("Executing _delete_member function. "+JSON.stringify(req.body));
+function _delete_member(data, callback){
+    console.log("Executing _delete_member function. "+JSON.stringify(data));
     
-        var memberId = req.body.id;
+        var memberId = data.id;
 
         //memberId = 1024;
 
@@ -106,6 +106,7 @@ function _delete_member(callback){
             }
             else{
                 console.log("The member to remove is: "+JSON.stringify(row));
+                
                 callback(memberId, null);
             }
         });
@@ -120,7 +121,6 @@ function _update_member(data, callback){
 
     var data = [data.firstname, data.lastname, data.ssn, data.phone, data.cellphone, data.email, data.address.trim(), data.registerDate, id];
     let db = new sqlite.Database(dbFileName);
-    //var data = [req.body.memberId];
 
     if(id>0){
         var query = "UPDATE Members SET Firstname = ?, Lastname = ?, SSN = ?, Phone = ?, Cellphone = ?, Email = ?, Address = ?, RegisterDate = ?  WHERE Id = ?";

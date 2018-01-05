@@ -79,11 +79,17 @@
                         dataType: "application/json",
                         data: {
                             id: id
+                        },
+                        success: function(response){
+                            console.log("The row was removed xyz.");
+                            console.log("response "+JSON.stringify(response));
+                            alert("The user was removed successfully.");
+                            window.location.href = "/admin/members-list"
+                        },
+                        error: function(resp){
+                            console.log("The error is "+JSON.stringify(resp));
                         }
-                    })
-                    .done(function (result, status, xhr) {
-                        console.log("The row was removed xyz.");
-                    })
+                    });
                 }
                 else{
                     console.log("The user didn´t confirmed.");

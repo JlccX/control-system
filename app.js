@@ -66,52 +66,63 @@ app.get('/admin/member', function(req, res){
 });
 
 app.post('/admin/delete', function(req, res){
+
+    try{
+
+    
     
         console.log("Starting the delete event."+JSON.stringify(req.body));
     
         var memberId = req.body.id;
 
         member.handler("delete", req.body, function(id, err){
-
-            if(error){
+            if(err){
                 console.log("Member delete error -> "+JSON.stringify(err));
             }
-
-            member.handler("list",null, function(response, error){
-
-                if(error){
-                    console.log("Member delete-list error -> "+JSON.stringify(error));
-                }
-
-                res.render("pages/members-list",{ Members: response, Title: title });
-            });
+            //res.redirect("/admin/members-list");
+            //return memberId;
+            var response=  {
+                status: 200,
+                sucess: "The member was successfully removed."
+            };
+            // res.setHeader("Content-Type","application/json");
+            // res.writeHead(200, { "Content-Type": "application/json" });
+            // res.json({success: "The member was successfully removed.", status: 200});
+            //res.end("success: response valid and true");
+            res.status(200).json({ "success": "The member was successfully removed.", "error": "null" });
         });
+
+    }
+    catch(exception){
+        console.log("An error was catched: "+JSON.stringify(exception));
+    }
+
     });
 
+
 app.get('/admin/members-list', function(req, res){
+    console.log("Loading members-list page."+new Date().toLocaleTimeString("en-US"));
     member.handler("list", null, function(response, error){
         
         if(error){
             console.log("Members-list error -> "+JSON.stringify(error));
         }
-
+        console.log("The size of the array is: "+response.length);
+        console.log("The members list info is: "+JSON.stringify(response));
         res.render("pages/members-list",{ Members: response, Title: "Members list page" });
     }); 
 });
 
 
 app.post('/admin/member', function(req, res){
+    console.log("Executing the member post function.");
     console.log("Redirecting to the /admin/members-list page.");
-    console.log("The body content is: "+JSON.stringify(req.body));
-    console.log("The username is: "+req.body.firstname);
-    console.log("The lastname is: "+req.body.lastname);
-    console.log("The memberId is: "+req.body.memberId);
 
-    member.handler("list", req.body, function(response, error){
+    member.handler("post", req.body, function(response, error){
         if(error){
             console.log("Member post error -> "+JSON.stringify(error));
         }
-        res.render("pages/members-list",{ Members: response, Title: "Members list page" });
+        res.redirect("/admin/members-list");
     });
 });
 
