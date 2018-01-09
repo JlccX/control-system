@@ -45,7 +45,9 @@ app.get('/admin/member', function(req, res){
 
     console.log("Starting the member page.");
 
-    var memberId = req.query.id;
+    var memberId = req.query.Id;
+
+    console.log("The query received is "+JSON.stringify(req.query));
 
     console.log("The member id received is: "+memberId);
 
@@ -68,12 +70,10 @@ app.get('/admin/member', function(req, res){
 app.post('/admin/delete', function(req, res){
 
     try{
-
-    
     
         console.log("Starting the delete event."+JSON.stringify(req.body));
     
-        var memberId = req.body.id;
+        var memberId = req.body.Id;
 
         member.handler("delete", req.body, function(id, err){
             if(err){
@@ -91,13 +91,11 @@ app.post('/admin/delete', function(req, res){
             //res.end("success: response valid and true");
             res.status(200).json({ "success": "The member was successfully removed.", "error": "null" });
         });
-
     }
     catch(exception){
         console.log("An error was catched: "+JSON.stringify(exception));
     }
-
-    });
+});
 
 
 app.get('/admin/members-list', function(req, res){

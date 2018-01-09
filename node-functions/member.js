@@ -31,9 +31,10 @@ exports.handler = function(method, data, callback){
 
 function _get_member(data, callback){
     var member;
-    var memberId = data.id;
+    var memberId = data.Id;
     
     console.log("The member id received is: "+memberId);
+    console.log("The JSON data received is: "+JSON.stringify(data));
 
     if(memberId){
         console.log("The member information will be recovered from the database.");
@@ -45,6 +46,12 @@ function _get_member(data, callback){
                 callback(null, error);
             }
             else{
+                var address = '';
+                if(row.Address)
+                {
+                    row.Address = row.Address.trim();
+                }
+
                 member = { 
                     Id: row.Id, 
                     Firstname: row.Firstname, 
@@ -91,7 +98,7 @@ function _get_members_list(data, callback){
 function _delete_member(data, callback){
     console.log("Executing _delete_member function. "+JSON.stringify(data));
     
-        var memberId = data.id;
+        var memberId = data.Id;
 
         //memberId = 1024;
 
@@ -113,13 +120,18 @@ function _delete_member(data, callback){
 }
 
 function _update_member(data, callback){
-    var id = data.id;
+    var id = data.Id;
 
-    if(id<=0){
+    if(id<=0 || !id){
         id = null;
     }
 
-    var data = [data.firstname, data.lastname, data.ssn, data.phone, data.cellphone, data.email, data.address.trim(), data.registerDate, id];
+    var address = "";
+    if(data.address){
+        address = data.address;
+    }
+
+    var data = [data.firstname, data.lastname, data.ssn, data.phone, data.cellphone, data.email, address, data.registerDate, id];
     let db = new sqlite.Database(dbFileName);
 
     if(id>0){
@@ -136,7 +148,10 @@ function _update_member(data, callback){
         });
     }
     else{
-        db.run("INSERT INTO Members (Firstname,Lastname,SSN,Phone,Cellphone,Email,Address,RegisterDate,Id) VALUES(?,?,?,?,?,?,?,?,?)", data);
-        callback(data, null);
+        db.run("INSERT INTO Members (Firstname,Lastname,SSN,Phone,Cellphone,Email,Address,RegisterDate,Id) VALUES(?,?,?,?,?,?,?,?,?)", data, function(err){
+            data.Id = this.lastID;
+            console.log("The Id created for the new object is: "+data.Id);
+            callback(data, null);
+        });
     }
 }

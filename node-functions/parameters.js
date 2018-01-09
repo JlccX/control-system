@@ -1,4 +1,5 @@
 module.exports = 
 {
-    dbFileName: "mydb.db" 
+    dbFileName: "myTestDB.db",
+    timeout: 5000
 };

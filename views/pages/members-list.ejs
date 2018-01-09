@@ -33,7 +33,7 @@
                             <td> <%= row.Cellphone %> </td>
                             <td class="buttons">
                                 <div class="input row">
-                                    <a href=/admin/member?id=<%= row.Id %>>Update</a>
+                                    <a href=/admin/member?Id=<%= row.Id %>>Update</a>
                                     <a style="margin-top:5px;"  class="remove" onclick="deleteRow(<%= row.Id %>);">Delete</a>
                                 </div>
                             </td>
@@ -78,7 +78,7 @@
                         type: "POST",
                         dataType: "application/json",
                         data: {
-                            id: id
+                            Id: id
                         },
                         success: function(response){
                             console.log("The row was removed xyz.");

@@ -2,6 +2,7 @@ withCredentials([
   string(credentialsId: 'GitHub-Personal-TokenAccess-JlccX', variable: 'GITHUB_TOKEN')
 ]) {
   env.GITHUB_TOKEN="$GITHUB_TOKEN"
+  env.SOURCE_CODE_FOLDER="git-testing-jenkins-pipeline"
 }
 
 node('master') {
@@ -25,42 +26,36 @@ node('master') {
             printf "executing the pre-deploy stage.\n"
         '''
 
-        //dir("$SOURCE_CODE_FOLDER"){
             checkout([$class: 'GitSCM', branches: [[name: '*/master']], doGenerateSubmoduleConfigurations: false, extensions: [], submoduleCfg: [], userRemoteConfigs: [[credentialsId: 'GitHub-Credentials-Username-Password-NoToken', url: 'https://github.com/jlccx-incontact/control-system.git']]])
-        //}
 
         sh '''
             set +x
             printf "The downloaded code is:\n"
             ls
+            printf 'The unit tests executed are:\n';
+            npm install
+            npm run unit-tests
         '''
-
-        //stash name: "$SOURCE_CODE_FOLDER", includes: "$SOURCE_CODE_FOLDER/*"
 
       }
     }
   }
 
-  stage("sonarqube"){
-    docker.withRegistry("https://hub.docker.com"){
-      docker.image("jlccxincontact/nodejs:alpine").inside("-u root:root"){
+    stage("upload-code-to-s3-bucket"){
+    docker.withRegistry("http://incontact-docker-snapshot-local.jfrog.io","ARTIFACTORY-CREDENTIALS"){
+        docker.image("cicd-awscli-toolbox").inside("-u root:root"){
+          dir("$SOURCE_CODE_FOLDER") {
+              unstash "$SOURCE_CODE_FOLDER"
+              sh 'printf "The stashed s3 files are:\n"'
+              sh 'ls $SOURCE_CODE_FOLDER'
+          }
           sh '''
-              set +x
-              printf "SonarQube stage.\n"
-              printf "The operating system properties are:\n"
-              uname -a
-          '''
-        }
-    }
-  }
+            set +x
+            chmod +x $SOURCE_CODE_FOLDER/scripts/configure.aws-cli.sh
+            $SOURCE_CODE_FOLDER/scripts/configure.aws-cli.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION
 
-  
-  stage("deploy-tests"){
-    docker.withRegistry("https://hub.docker.com"){
-      docker.image("jlccxincontact/nodejs:alpine").inside("-u root:root"){
-          sh '''
-              set +x
-              printf "\nThe deploy test execution was canceled.\n"
+            chmod +x $SOURCE_CODE_FOLDER/scripts/s3-sync.bucket.sh
+            $SOURCE_CODE_FOLDER/scripts/s3-sync.bucket.sh $AWS_ACCESS_KEY_ID $AWS_SECRET_ACCESS_KEY $AWS_REGION $SOURCE_CODE_FOLDER $DEV_BUCKET
           '''
         }
     }
